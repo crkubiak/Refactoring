@@ -1,16 +1,18 @@
+import java.util.ArrayList;
 import java.util.Enumeration;
+import java.util.Iterator;
 import java.util.Vector;
 
 public class Customer {
     private String name;
-    private Vector _rentals = new Vector();
+    private ArrayList<Rental> _rentals = new ArrayList();
 
     public Customer(String name) {
         this.name = name;
     }
 
     public void addRental(Rental arg) {
-        _rentals.addElement(arg);
+        _rentals.add(arg);
     }
 
     public String getName() {
@@ -18,12 +20,12 @@ public class Customer {
     }
 
     public String statement() {
-        Enumeration rentals = _rentals.elements();
+        Iterator<Rental> rentals = _rentals.iterator();
         String result = "Rental Record for " + getName() + "\n";
-        while (rentals.hasMoreElements()) {
-            Rental each = (Rental) rentals.nextElement();
+        while (rentals.hasNext()) {
+            Rental each = (Rental) rentals.next();
             //show figures for this rental
-            result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(each.movie.price.getCharge(each, each.movie)) + "\n";
+            result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(each.getCharge()) + "\n";
         }
 
         // add footer lines
@@ -33,12 +35,12 @@ public class Customer {
     }
 
     public String htmlStatement() {
-        Enumeration rentals = _rentals.elements();
+        Iterator<Rental> rentals = _rentals.iterator();
         String result = "<H1>Rental Record for <EM>" + getName() + "</EM></H1><P>\n";
-        while (rentals.hasMoreElements()) {
-            Rental each = (Rental) rentals.nextElement();
+        while (rentals.hasNext()) {
+            Rental each = (Rental) rentals.next();
             //show figures for this rental
-            result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(each.movie.price.getCharge(each, each.movie)) + "<BR>\n";
+            result += "\t" + each.getMovie().getTitle() + "\t" + String.valueOf(each.getCharge()) + "<BR>\n";
         }
 
         // add footer lines
@@ -50,20 +52,20 @@ public class Customer {
 
     private double getTotalCharge() {
         double result = 0;
-        Enumeration rentals = _rentals.elements();
-        while (rentals.hasMoreElements()) {
-            Rental each = (Rental) rentals.nextElement();
-            result += each.movie.price.getCharge(each, each.movie);
+        Iterator<Rental> rentals = _rentals.iterator();
+        while (rentals.hasNext()) {
+            Rental each = (Rental) rentals.next();
+            result += each.getCharge();
         }
         return result;
     }
 
     private double getTotalFrequentRenterPoints() {
         double result = 0;
-        Enumeration rentals = _rentals.elements();
-        while (rentals.hasMoreElements()) {
-            Rental each = (Rental) rentals.nextElement();
-            result += each.movie.price.getFrequentRenterPoints(each, each.movie);
+        Iterator<Rental> rentals = _rentals.iterator();
+        while (rentals.hasNext()) {
+            Rental each = (Rental) rentals.next();
+            result += each.getFrequentRenterPoints();
         }
         return result;
     }
